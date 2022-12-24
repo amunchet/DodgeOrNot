@@ -45,7 +45,6 @@ def read_lobby():
         "User-Agent" : "insomnia/7.1.1",
         "Accept" : "*/*"
     }
-    print(headers)
 
     url = "lol-champ-select/v1/session"
 
@@ -54,13 +53,26 @@ def read_lobby():
         headers=headers,
         verify=False
     )
-    data = request.json()
+    
+    lobby = {
+        "us" : [],
+        "them" : []
+    }
+    try:
+        data = request.json()
+    except Exception:
+        return lobby
+    
     if "myTeam" in data:
         for player in data["myTeam"]:
             if str(player["championId"]) != "0":
                 print(f"Our Champion: {champs[str(player['championId'])]}")
+                lobby["us"].append(champs[str(player["championId"])])
 
     if "theirTeam" in data:
         for player in data["theirTeam"]:
             if str(player["championId"]) != "0":
                 print(f"Their Champion: {champs[str(player['championId'])]}")
+                lobby["them"].append(champs[str(player["championId"])])
+    
+    return lobby

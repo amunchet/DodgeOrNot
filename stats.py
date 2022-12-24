@@ -45,9 +45,12 @@ def check_synergies(team: List[str]):
     idx = 0
     for (champ_a, champ_b) in combinations(team, 2):
         output = (graphql(cleanup(champ_a), cleanup(champ_b)))
-        print("For", champ_a, "and", champ_b, "the odds of winning together is:", output)
+        # print("For", champ_a, "and", champ_b, "the odds of winning together is:", output)
         
         result += output
         idx += 1
     
-    return result/idx
+    if idx == 0:
+        idx = 1
+
+    return round(result/idx, 1)
