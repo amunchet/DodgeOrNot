@@ -4,7 +4,3 @@ numpy
 requests
 bs4
 pillow
-
-
-willump
-syncer

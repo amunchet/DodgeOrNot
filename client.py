@@ -1,11 +1,33 @@
 import requests
 import base64
 
+lockfile = "D:\\Riot Games\\League of Legends\\lockfile"
+
+def find_current_version():
+    url = "https://ddragon.leagueoflegends.com/api/versions.json"
+    a = requests.get(url)
+    return a.json()[0]
+
+def list_champ_ids():
+    """
+    Lists all champ ids
+    """
+    url = f"http://ddragon.leagueoflegends.com/cdn/{find_current_version()}/data/en_US/champion.json"
+    request = requests.get(
+        url,
+    )
+    data = request.json()
+    output = {}
+    for x in data["data"].keys():
+        output[data["data"][x]["key"]] = x.lower()
+
+    return output
+
 def read_lobby():
     """
     Reads lobby with Riot Client API
     """
-    lockfile = "D:\\Riot Games\\League of Legends\\lockfile"
+    champs = list_champ_ids()
 
     with open(lockfile) as f:
         items = f.read()
@@ -33,11 +55,12 @@ def read_lobby():
         verify=False
     )
     data = request.json()
-    print(data)
     if "myTeam" in data:
         for player in data["myTeam"]:
-            print(f"Champion: {player['championId']}")
+            if str(player["championId"]) != "0":
+                print(f"Our Champion: {champs[str(player['championId'])]}")
 
     if "theirTeam" in data:
         for player in data["theirTeam"]:
-            print(f"Champion: {player['championId']}")
+            if str(player["championId"]) != "0":
+                print(f"Their Champion: {champs[str(player['championId'])]}")
