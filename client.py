@@ -1,7 +1,11 @@
+"""
+Chat GPT Prompts:
+    - Using python and the Riot Games API LCU, list the current champions selected in champ select  and determine champion name based on the resultant id
+    - Using python and the riot LCU api, list all champion ids
+
+"""
 import requests
 import base64
-
-lockfile = "D:\\Riot Games\\League of Legends\\lockfile"
 
 def find_current_version():
     url = "https://ddragon.leagueoflegends.com/api/versions.json"
@@ -23,7 +27,7 @@ def list_champ_ids():
 
     return output
 
-def read_lobby():
+def read_lobby(lockfile):
     """
     Reads lobby with Riot Client API
     """
