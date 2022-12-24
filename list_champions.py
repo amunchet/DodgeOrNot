@@ -8,6 +8,7 @@ import re
 import urllib.parse
 
 from bs4 import BeautifulSoup
+from PIL import Image
 from typing import List
 
 
@@ -40,7 +41,7 @@ def find_all_champion_links():
     Downloads all champion thumbnails
 
     """
-    base_url = "https://leagueoflegends.fandom.com/wiki/Category:Champion_squares?from="
+    base_url = "https://leagueoflegends.fandom.com/wiki/Category:Champion_circles?from="
     class_name = "category-page__member-thumbnail"
     letters = [chr(i) for i in range(ord('A'), ord('Z') + 1)]
 
@@ -57,7 +58,7 @@ def find_all_champion_links():
         print("Links:", links)
         for link in links:
             print("Looking at", link)
-            if "OriginalSquare" in link.get("alt"):
+            if "OriginalCircle" in link.get("alt"):
                 temp = link.get("src").split("/revision/")[0]
                 results.append(temp)
                 print("Found", temp)
@@ -73,11 +74,33 @@ def download_image(url:str):
     response = requests.get(url)
 
     # Save the image to a file
-    filename = urllib.parse.unquote(url.split("/")[-1]).replace("_OriginalSquare.png", "").lower()
+    filename = urllib.parse.unquote(url.split("/")[-1]).replace("_OriginalCircle.png", "").lower()
     filename = re.sub(r"[^a-zA-Z]", "", filename)
-    with open(f"images/{filename}.png", "wb") as file:
-        file.write(response.content)
 
+    output_filename = f"images/{filename}.png"
+
+    with open(output_filename, "wb") as file:
+        file.write(response.content)
+    
+    return output_filename
+
+def trim_images(path:str):
+    """
+    Trims images
+    """
+    image = Image.open(path)
+
+    # Crop the image 20 pixels from each side
+    width, height = image.size
+    cropped_image = image.crop((20, 20, width - 20, height - 20))
+
+    image.close()
+
+    # Resize to 60x60
+    cropped_image = cropped_image.resize((60,60))
+
+    # Save the cropped image to a file
+    cropped_image.save(path)
 
 def download_missing_champions():
     """
@@ -97,5 +120,5 @@ def download_missing_champions():
     for link in links:
         if parse_champ_name(link) + ".png" not in current_files:
             print("Downloading", parse_champ_name(link),"...")
-            download_image(link)
-        
+            output_filename = download_image(link)
+            trim_images(output_filename)
