@@ -40,5 +40,8 @@ for image in images:
     if max_val > 0.8:
         print(f"Found image at ({max_loc[0]}, {max_loc[1]})")
 
+        # TODO: Need to sort out the images 
+        # TODO: match on summoner name as well to know which is mine
+
 # If no match was found, print a message
 print("No match found.")
