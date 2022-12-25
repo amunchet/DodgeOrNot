@@ -29,11 +29,11 @@ jobs:
       # Bump the version and create a release
       - name: Bump version and create release
         uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           file: dist/main.exe
           name: DodgeOrNot.exe
-          tag: v${{ github.ref }}
           draft: false
           prerelease: false
           release_notes: |
