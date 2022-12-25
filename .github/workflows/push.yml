@@ -30,6 +30,7 @@ jobs:
       - name: Bump version and create release
         uses: actions/create-release@v1
         with:
+          token: ${{ secrets.GITHUB_TOKEN }}
           tag_name: v${{ github.ref }}
           release_name: Release v${{ github.ref }}
           draft: false
