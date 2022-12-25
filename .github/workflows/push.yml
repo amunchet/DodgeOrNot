@@ -28,12 +28,13 @@ jobs:
 
       # Bump the version and create a release
       - name: Bump version and create release
-        uses: actions/create-release@v1
+        uses: softprops/action-gh-release@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          tag_name: v${{ github.ref }}
-          release_name: Release v${{ github.ref }}
+          file: dist/main.exe
+          name: DodgeOrNot.exe
+          tag: v${{ github.ref }}
           draft: false
           prerelease: false
-          asset_name: main.exe
-          asset_path: dist/main.exe
+          release_notes: |
+            Automatic build and release of DodgeOrNot.exe
