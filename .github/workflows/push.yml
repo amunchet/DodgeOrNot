@@ -27,13 +27,9 @@ jobs:
           pyinstaller --onefile --windowed main.py
 
       # Bump the version and create a release
-      - name: Bump version and create release
-        uses: actions/create-release@v1
+      - uses: "marvinpinto/action-automatic-releases@latest"
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          tag_name: v${{ github.ref }}
-          release_name: Release v${{ github.ref }}
-          draft: false
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
           prerelease: false
-          asset_name: main.exe
-          asset_path: dist/main.exe
+          files: |
+            dist/main.exe
