@@ -13,7 +13,7 @@ import tkinter as tk
 import client
 import stats
 
-def show_settings_window():
+def show_settings_window(): # pragma: no cover
     """
     Shows the settings window on startup
     """
@@ -53,7 +53,7 @@ def show_settings_window():
 
 
 
-def show_main_window(lockfile):
+def show_main_window(lockfile): # pragma: no cover
     """
     Main Window
     """
@@ -153,7 +153,7 @@ def show_main_window(lockfile):
     # Run the main loop
     root.mainloop()
 
-if __name__ == "__main__":
+if __name__ == "__main__": # pragma: no cover
     if not os.path.exists("lockfile-location"):
         show_settings_window()
 

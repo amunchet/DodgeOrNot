@@ -1,3 +1,8 @@
 requests
 bs4
 pillow
+
+# Dev Dependencies (tests)
+flask
+pytest
+pytest-cov
