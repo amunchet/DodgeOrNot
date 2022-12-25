@@ -4,6 +4,7 @@ on: push
 
 jobs:
   build:
+    if: startsWith(github.ref, 'refs/tags/')
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v2
@@ -21,15 +22,17 @@ jobs:
       # Build the executable
       - name: Build executable
         run: |
-          pyinstaller --onefile --windowed main.py
+          pyinstaller --onefile --windowed main.py -n DodgeOrNot.exe
+
+      - name: List dist folder
+        run: ls dist || true
 
       # Bump the version and create a release
       - name: Bump version and create release
         uses: softprops/action-gh-release@v1
-        if: startsWith(github.ref, 'refs/tags/')
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          file: dist/main.exe
+          files: dist/DodgeOrNot.exe
           name: DodgeOrNot.exe
           draft: false
           prerelease: false
