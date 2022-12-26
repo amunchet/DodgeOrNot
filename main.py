@@ -23,6 +23,7 @@ def show_settings_window(): # pragma: no cover
 
     root.wm_title("DodgeOrNot")
     root.wm_iconbitmap("logo.ico")
+    root.wm_attributes("-topmost", 1)
 
     # Create the frame to hold the widgets
     frame = tk.Frame(root)
