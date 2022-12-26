@@ -6,8 +6,10 @@ Chat GPT prompt:
     - Python GUI with top text that says "Please enter the location of LoL" folowed by an input, then followed by a button that saves the input to a file
 """
 import os
+import psutil
 import time
 import threading
+
 import tkinter as tk
 
 import client
@@ -29,9 +31,12 @@ def show_settings_window(): # pragma: no cover
     frame = tk.Frame(root)
     frame.pack()
 
+    label = tk.Label(frame, text="No running LoL client detected.  Close this program and start up the LoL client.")
+    label.pack(pady=10, padx=10)
+
     # Create the label widget
-    label = tk.Label(frame, text="Please enter the location of LoL:")
-    label.pack()
+    label = tk.Label(frame, text="Or you can enter the location of LoL directly:")
+    label.pack(pady=10, padx=10)
 
     # Create the entry widget
     entry = tk.Entry(frame)
@@ -49,8 +54,8 @@ def show_settings_window(): # pragma: no cover
         root.destroy()
 
     # Create the button widget
-    button = tk.Button(frame, text="Save", command=save_input)
-    button.pack()
+    button = tk.Button(frame, text="Save Lockfile Location", command=save_input)
+    button.pack(padx=10, pady=10)
 
     # Run the main loop
     root.mainloop()
@@ -161,10 +166,30 @@ def show_main_window(lockfile): # pragma: no cover
     root.mainloop()
 
 if __name__ == "__main__": # pragma: no cover
-    if not os.path.exists("lockfile-location"):
+    lockfile = ""
+
+    # Check default location for lockfile
+    default = "C:\\Program Files\\Riot Games\\League of Legends\\"
+    if os.path.exists(default):
+        lockfile = os.path.join(default, "lockfile")
+
+    # Look for running process and look for lockfile from there
+    process = psutil.process_iter(attrs=['name'])
+    process = [p for p in process if p.info["name"] == "RiotClientUxRender.exe"]
+
+    if process:
+        executable_path = process[0].exe()
+
+        executable_path = "\\".join(executable_path.split("\\")[:2] + ["League of Legends", "lockfile"])
+
+        if os.path.exists(executable_path):
+            lockfile = executable_path
+
+    # Show Settings window if all else fails
+    if not lockfile and not os.path.exists("lockfile-location"):
         show_settings_window()
 
-    with open("lockfile-location", "r") as f:
-        lockfile = f.read()
+        with open("lockfile-location", "r") as f:
+            lockfile = f.read()
 
     show_main_window(lockfile)
