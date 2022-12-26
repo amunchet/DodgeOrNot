@@ -7,16 +7,19 @@ Chat GPT Prompts:
 import requests
 import base64
 
-def find_current_version():
-    url = "https://ddragon.leagueoflegends.com/api/versions.json"
+def find_current_version(url=""):
+    if url == "": # pragma: no cover
+        url = "https://ddragon.leagueoflegends.com/api/versions.json"
     a = requests.get(url)
     return a.json()[0]
 
-def list_champ_ids():
+def list_champ_ids(url=""):
     """
     Lists all champ ids
     """
-    url = f"http://ddragon.leagueoflegends.com/cdn/{find_current_version()}/data/en_US/champion.json"
+    if url == "": # pragma: no cover
+        url = f"http://ddragon.leagueoflegends.com/cdn/{find_current_version()}/data/en_US/champion.json"
+    
     request = requests.get(
         url,
     )
@@ -27,7 +30,7 @@ def list_champ_ids():
 
     return output
 
-def read_lobby(lockfile):
+def read_lobby(lockfile, url=""):
     """
     Reads lobby with Riot Client API
     """
@@ -49,11 +52,13 @@ def read_lobby(lockfile):
         "User-Agent" : "insomnia/7.1.1",
         "Accept" : "*/*"
     }
+    print(headers)
 
-    url = "lol-champ-select/v1/session"
+    if url == "": # pragma: no cover
+        url = f"https://127.0.0.1:{port}/lol-champ-select/v1/session"
 
     request = requests.get(
-        f"https://127.0.0.1:{port}/{url}",
+        url,
         headers=headers,
         verify=False
     )
