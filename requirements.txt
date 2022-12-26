@@ -2,6 +2,8 @@ requests
 bs4
 pillow
 
+psutil
+
 # Build tools
 pyinstaller
 
