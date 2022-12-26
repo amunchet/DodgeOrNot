@@ -21,6 +21,9 @@ def show_settings_window(): # pragma: no cover
     # Create the main window
     root = tk.Tk()
 
+    root.wm_title("DodgeOrNot")
+    root.wm_iconbitmap("logo.ico")
+
     # Create the frame to hold the widgets
     frame = tk.Frame(root)
     frame.pack()
@@ -61,6 +64,9 @@ def show_main_window(lockfile): # pragma: no cover
     root = tk.Tk()
     # root.geometry("425x200")
     # root.configure(bg="lightblue")
+
+    root.wm_title("DodgeOrNot")
+    root.wm_iconbitmap("logo.ico")
 
     # Get the screen width and height
     screen_width = root.winfo_screenwidth()
