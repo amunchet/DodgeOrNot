@@ -6,7 +6,6 @@ Chat GPT prompt:
     - Python GUI with top text that says "Please enter the location of LoL" folowed by an input, then followed by a button that saves the input to a file
 """
 import os
-import psutil
 import time
 import threading
 
@@ -166,6 +165,9 @@ def show_main_window(lockfile): # pragma: no cover
     root.mainloop()
 
 if __name__ == "__main__": # pragma: no cover
+    
+    import psutil # For Windows only
+
     lockfile = ""
 
     # Check default location for lockfile
