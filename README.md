@@ -1,3 +1,4 @@
+[![codecov](https://codecov.io/gh/amunchet/DodgeOrNot/branch/master/graph/badge.svg)](https://codecov.io/gh/amunchet/DodgeOrNot)
 # DodgeOrNot
 Python helper script to determine whether or not you should dodge a LoL lobby
 
