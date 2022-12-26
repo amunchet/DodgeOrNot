@@ -80,7 +80,7 @@ def champ_ids(): # pragma: no cover
 
 
 @app.route("/lol-champ-select/v1/session")
-def lcu():
+def lcu(): # pragma: no cover
     auth = request.headers.get("Authorization")
     password = auth.split("Basic ")[1]
     decoded = base64.b64decode(password).decode("utf-8")
@@ -100,7 +100,7 @@ def lcu():
 
 
 @app.route("/lol-champ-select/v1/session-notworking")
-def not_working_lcu():
+def not_working_lcu(): # pragma: no cover
     return ""
 
 @app.route("/shutdown")
