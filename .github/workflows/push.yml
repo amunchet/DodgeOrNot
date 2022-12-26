@@ -16,12 +16,12 @@ jobs:
         run: pytest --cov --cov-fail-under=95 tests/ --cov-report=term-missing
 
       - name: List directory
-        run: (ls . && ls tests) || true
-        
+        run: (ls -la . && ls -la tests) || true
+
       - name: Test and upload coverage to Codecov
         uses: codecov/codecov-action@v1
         with:
-          file: .coverage
+          file: ./.coverage
 
   build:
     needs: test
