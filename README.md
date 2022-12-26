@@ -1,4 +1,8 @@
 [![Testing and Build](https://github.com/amunchet/DodgeOrNot/actions/workflows/push.yml/badge.svg)](https://github.com/amunchet/DodgeOrNot/actions/workflows/push.yml) 
+
+
+<img src="design/logo.png" height=200 />
+
 # DodgeOrNot
 Python helper script to determine whether or not you should dodge a LoL lobby
 
