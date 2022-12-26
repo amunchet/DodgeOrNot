@@ -10,7 +10,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
       - run: |
-          pip install pytest pytest-cov
+          pip install -r requirements.txt
           pytest --cov --cov-fail-under=95 tests/ --cov-report=term-missing
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1
