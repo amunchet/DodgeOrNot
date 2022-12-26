@@ -1,4 +1,4 @@
-[![Testing and Build](https://github.com/amunchet/DodgeOrNot/actions/workflows/push.yml/badge.svg)](https://github.com/amunchet/DodgeOrNot/actions/workflows/push.yml) [![codecov](https://codecov.io/gh/amunchet/DodgeOrNot/branch/master/graph/badge.svg)](https://codecov.io/gh/amunchet/DodgeOrNot)
+[![Testing and Build](https://github.com/amunchet/DodgeOrNot/actions/workflows/push.yml/badge.svg)](https://github.com/amunchet/DodgeOrNot/actions/workflows/push.yml) 
 # DodgeOrNot
 Python helper script to determine whether or not you should dodge a LoL lobby
 
