@@ -2,8 +2,11 @@ requests
 bs4
 pillow
 
+# Build tools
+pyinstaller
+
 # Dev Dependencies (tests)
+
 flask
 pytest
 pytest-cov
-pyinstaller
