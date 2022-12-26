@@ -9,9 +9,15 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
-      - run: |
-          pip install -r requirements.txt
-          pytest --cov --cov-fail-under=95 tests/ --cov-report=term-missing
+      - name: Install requirements
+        run: pip install -r requirements.txt
+
+      - name: Run Tests
+        run: pytest --cov --cov-fail-under=95 tests/ --cov-report=term-missing
+
+      - name: List directory
+        run: (ls . && ls tests) || true
+        
       - name: Test and upload coverage to Codecov
         uses: codecov/codecov-action@v1
         with:
