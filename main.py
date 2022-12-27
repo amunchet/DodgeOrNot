@@ -6,6 +6,7 @@ Chat GPT prompt:
     - Python GUI with top text that says "Please enter the location of LoL" folowed by an input, then followed by a button that saves the input to a file
 """
 import os
+import sys
 import psutil 
 import time
 import threading
@@ -31,6 +32,13 @@ file_handler.setFormatter(formatter)
 logger.addHandler(file_handler)
 logger.addHandler(stream_handler)
 
+def resource_path(relative_path):    
+    try:       
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)
 
 def show_settings_window(): # pragma: no cover
     """
@@ -41,7 +49,7 @@ def show_settings_window(): # pragma: no cover
     root = tk.Tk()
 
     root.wm_title("DodgeOrNot")
-    # root.wm_iconbitmap("logo.ico")
+    root.wm_iconbitmap(resource_path("logo.ico"))
     root.wm_attributes("-topmost", 1)
 
     # Create the frame to hold the widgets
@@ -91,7 +99,7 @@ def show_main_window(lockfile): # pragma: no cover
     # root.configure(bg="lightblue")
 
     root.wm_title("DodgeOrNot")
-    root.wm_iconbitmap("logo.ico")
+    root.wm_iconbitmap(resource_path("logo.ico"))
 
     # Get the screen width and height
     screen_width = root.winfo_screenwidth()

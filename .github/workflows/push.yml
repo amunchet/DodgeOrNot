@@ -43,7 +43,7 @@ jobs:
       # Build the executable
       - name: Build executable
         run: |
-          pyinstaller --onefile --windowed main.py -n DodgeOrNot.exe --icon=logo.ico
+          pyinstaller --onefile --windowed main.py -n DodgeOrNot.exe --icon=logo.ico --add-data "logo.ico;."
 
       - name: List dist folder
         run: ls dist || true
