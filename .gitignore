@@ -5,3 +5,4 @@ images/**
 lockfile-location
 lockfile-temp
 .coverage**
+dodgeOrNot.log

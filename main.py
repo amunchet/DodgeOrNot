@@ -9,17 +9,34 @@ import os
 import psutil 
 import time
 import threading
+import logging
 
 import tkinter as tk
 
 import client
 import stats
 
+# Logging
+logger = logging.getLogger("dodgeOrNot_logger")
+logger.setLevel(logging.DEBUG)
+
+if os.path.exists("dodgeOrNot.log"):
+    os.remove("dodgeOrNot.log")
+
+file_handler = logging.FileHandler("dodgeOrNot.log")
+stream_handler = logging.StreamHandler()
+
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+file_handler.setFormatter(formatter)
+logger.addHandler(file_handler)
+logger.addHandler(stream_handler)
+
+
 def show_settings_window(): # pragma: no cover
     """
     Shows the settings window on startup
     """
-
+    logger.debug("Showing Settings Window...")
     # Create the main window
     root = tk.Tk()
 
@@ -47,6 +64,7 @@ def show_settings_window(): # pragma: no cover
         # Get the input from the entry widget
         input_text = entry.get()
         
+        logger.debug(f"[Settings] Input entry:{input_text}")
         # Write the input to a file
         with open("lockfile-location", "w") as f:
             f.write(input_text.strip())
@@ -66,6 +84,7 @@ def show_main_window(lockfile): # pragma: no cover
     """
     Main Window
     """
+    logger.debug("Main Window...")
     # Create the main window
     root = tk.Tk()
     # root.geometry("425x200")
@@ -143,9 +162,14 @@ def show_main_window(lockfile): # pragma: no cover
         loop_check = True
         while loop_check:
             new_lobby = client.read_lobby(lockfile)
+            logger.debug(f"[Main] New lobby:{new_lobby}")
             if new_lobby != current_lobby:
                 our_chances = stats.check_synergies(new_lobby["us"])
                 their_chances = stats.check_synergies(new_lobby["them"])
+
+                logger.debug(f"Our chances:{our_chances}")
+                logger.debug(f"Their chances:{their_chances}")
+
 
                 green_box1.configure(bg=color_from_chances(our_chances), text=f"{our_chances}%")
                 orange_box2.configure(bg=color_from_chances(their_chances), text=f"{their_chances}%")
@@ -174,12 +198,14 @@ if __name__ == "__main__": # pragma: no cover
     default = "C:\\Program Files\\Riot Games\\League of Legends\\"
     if os.path.exists(default):
         lockfile = os.path.join(default, "lockfile")
+        logger.debug("Found default lockfile location")
 
     # Look for running process and look for lockfile from there
     process = psutil.process_iter(attrs=['name'])
     process = [p for p in process if p.info["name"] == "RiotClientUxRender.exe"]
 
     if process:
+        logger.debug("[Lockfile] Found running client process...")
         executable_path = process[0].exe()
 
         executable_path = "\\".join(executable_path.split("\\")[:2] + ["League of Legends", "lockfile"])
@@ -189,9 +215,13 @@ if __name__ == "__main__": # pragma: no cover
 
     # Show Settings window if all else fails
     if not lockfile and not os.path.exists("lockfile-location"):
+        logger.debug("No lockfile - showing settings window")
         show_settings_window()
 
+    if not lockfile and os.path.exists("lockfile-location"):
+        logger.debug("Found a lockfile location...")
         with open("lockfile-location", "r") as f:
             lockfile = f.read()
-
+    
+    logger.debug(f"Lockfile:{lockfile}")
     show_main_window(lockfile)

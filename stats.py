@@ -2,12 +2,14 @@
 Chat GPT prompt: 
     - Write a python program that calls a graphql endpoint found in the variable graphql_url.  It queries v2CounteriwthCounterStatsPage with the variables $friendlyNameClean (which is a string) and $enemyNameClean (which is a string).  It receives back ["data"]["v2ChampionWithChampion"]["winRate"]
 """
+import logging
 import requests
 from typing import List
 from itertools import combinations
 
 graphql_url = "https://www.mobachampion.com/graphql"
 
+logger = logging.getLogger("dodgeOrNot_logger")
 
 def graphql(friendly_name_clean, enemy_name_clean):
     """ """
@@ -27,8 +29,11 @@ def graphql(friendly_name_clean, enemy_name_clean):
     # Send the GraphQL request
     response = requests.post(graphql_url, json=payload)
     try: 
-        return response.json()["data"]["v2ChampionWithChampion"]["winRate"]
+        answer = response.json()["data"]["v2ChampionWithChampion"]["winRate"]
+        logger.debug(f"Winrate for {friendly_name_clean} and {enemy_name_clean}: {answer}")
+        return answer
     except Exception:
+        logger.error(f"Error in response: {response.text}, with {friendly_name_clean} and {enemy_name_clean}")
         raise Exception(f"Error in response: {response.text}, with {friendly_name_clean} and {enemy_name_clean}")
 
 
@@ -45,7 +50,7 @@ def check_synergies(team: List[str]):
     idx = 0
     for (champ_a, champ_b) in combinations(team, 2):
         output = (graphql(cleanup(champ_a), cleanup(champ_b)))
-        # print("For", champ_a, "and", champ_b, "the odds of winning together is:", output)
+        logger.debug("For", champ_a, "and", champ_b, "the odds of winning together is:", output)
         
         result += output
         idx += 1
